@@ -46,6 +46,28 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Users
                                 </NavLink>
+
+                                <NavLink
+                                    :href="route('chat.index')"
+                                    :active="route().current('chat.index')"
+                                >
+                                    Chat
+                                </NavLink>
+
+                                <NavLink
+                                    :href="route('chat.conversation')"
+                                    :active="route().current('chat.conversation')"
+                                >
+                                    Conversation
+                                </NavLink>
+
+
+                                <NavLink
+                                    :href="route('chat.list')"
+                                    :active="route().current('chat.list')"
+                                >
+                                    Conversation My
+                                </NavLink>
                             </div>
                         </div>
 

@@ -2,6 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\chatpublic;
+use App\Models\Conversation;
+use App\Models\ConversationUser;
+use App\Models\Message;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -87,6 +91,45 @@ class DatabaseSeeder extends Seeder
             'name' => 'Ouafa8',
             'email' => 'Ouafa8@example.com',
             'password' => bcrypt('12345678'),
+        ]);
+
+
+           // رسائل تجريبية
+        chatpublic::create([
+            'user_id' => '1',
+            'content' => 'السلام عليكم'
+        ]);
+
+        chatpublic::create([
+            'user_id' => '2',
+            'content' => 'مرحبا أحمد!'
+        ]);
+
+        chatpublic::create([
+            'user_id' => '3',
+            'content' => 'كيف حال الجميع؟'
+        ]);
+
+
+
+        Conversation::create([
+            'id' => '1',
+        ]);
+        Conversation::create([
+            'id' => '2',
+        ]);
+
+        // إنشاء رسائل
+        Message::create([
+            'conversation_id' => '1',
+            'user_id' => '1',
+            'content' => 'السلام، كيف داير؟'
+        ]);
+
+        Message::create([
+            'conversation_id' => '1',
+            'user_id' => '2',
+            'content' => 'الحمد لله، ونتا؟'
         ]);
     }
 }
