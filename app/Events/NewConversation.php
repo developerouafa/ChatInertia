@@ -20,20 +20,16 @@ class NewConversation implements ShouldBroadcast
 
     public $conversation;
     public $message;
-    public $otherUser;
+    public $sender;
 
-    protected int $receiverId;
+    protected $receiverId;
 
-    public function __construct(Conversation $conversation, ?Message $message, User $receiver)
+    public function __construct(Conversation $conversation, Message $message, User $receiver)
     {
         $this->conversation = $conversation;
-        $this->message = $message ? $message->load('user:id,name') : null;
-
-        // المستلم هو الشخص اللي غادي يستقبل الحدث
+        $this->message = $message->load('user:id,name');
+        $this->sender = $message->user; // اللي صيفط الرسالة
         $this->receiverId = $receiver->id;
-
-        // الراسل ديال المحادثة
-        $this->otherUser = $message ? $message->user : Auth::user();
     }
 
     public function broadcastOn()

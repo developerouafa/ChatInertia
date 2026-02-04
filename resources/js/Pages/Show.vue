@@ -22,12 +22,12 @@ const send = async () => {
   body.value = ''
 }
 
-onMounted(() => {
-  Echo.private(`conversation.${page.props.conversation.id}`)
-    .listen('MessageSentPrivate', (e) => {
-      messages.value.push(e.message)
-    })
-})
+// onMounted(() => {
+//   Echo.private(`conversation.${page.props.conversation.id}`)
+//     .listen('MessageConversation', (e) => {
+//       messages.value.push(e.message)
+//     })
+// })
 
 onBeforeUnmount(() => {
   Echo.leave(`conversation.${page.props.conversation.id}`)

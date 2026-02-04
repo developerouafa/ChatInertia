@@ -29,7 +29,6 @@ class ChatpublicController extends Controller
             'content' => $request->content,
         ]);
 
-        // event(new MessageSent($message));
     // باش يبان للآخرين فوراً (اختياري إذا كاين Echo/Pusher)
     broadcast(new MessageSent($message))->toOthers();
 

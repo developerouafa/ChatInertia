@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('content');
             $table->timestamp('edited_at')->nullable();
             $table->timestamp('read_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

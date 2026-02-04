@@ -1,13 +1,11 @@
 <script setup>
 import { router } from '@inertiajs/vue3'
-import { ref, computed, onMounted } from 'vue'
-
+import { ref, computed } from 'vue'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 
 const props = defineProps({
   users: Array
 })
-const authId = page.props.auth.id // أو كيف ما عندك معرف المستخدم
 
 const search = ref('')
 
@@ -22,7 +20,6 @@ const filteredUsers = computed(() => {
 const openChat = (userId) => {
   router.visit(`/chat/open/${userId}`)
 }
-
 </script>
 
 <template>

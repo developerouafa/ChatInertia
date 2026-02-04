@@ -116,9 +116,12 @@ class ConversationUserController extends Controller
         broadcast(new MessageConversation($message))->toOthers();
 
             // 2️⃣ بث للمستخدم الآخر فقط لعرض المحادثة في ChatList realtime
-            $otherUser = $conversation->users()
-                ->where('id', '!=', Auth::id())
-                ->first();
+            // $otherUser = $conversation->users()
+            //     ->where('id', '!=', Auth::id())
+            //     ->first();
+
+            $otherUser = $conversation->users
+                ->firstWhere('id', '!=', Auth::id());
 
             if ($otherUser) {
                 broadcast(new NewConversation($conversation, $message, $otherUser));
@@ -156,84 +159,4 @@ class ConversationUserController extends Controller
 
         return response()->json(['status' => 'deleted']);
     }
-
-    // public function index()
-    // {
-    //     $authId = Auth::id();
-
-    //     $conversations = Conversation::whereHas('users', function ($q) use ($authId) {
-    //             $q->where('users.id', $authId);
-    //         })
-    //         ->with([
-    //             // نجيب users
-    //             'users:id,name',
-    //             // نجيب آخر رسالة فقط
-    //             'messages' => function ($q) {
-    //                 $q->latest()->limit(1);
-    //             }
-    //         ])
-    //         ->latest('updated_at')
-    //         ->get()
-    //         ->map(function ($conversation) use ($authId) {
-
-    //             // نحدد المستخدم الآخر
-    //             $otherUser = $conversation->users->firstWhere('id', '!=', $authId);
-
-    //             return [
-    //                 'id' => $conversation->id,
-    //                 'other_user' => $otherUser,
-    //                 'last_message' => $conversation->messages->first(),
-    //             ];
-    //         });
-
-    //     return Inertia::render('ChatList', [
-    //         'conversations' => $conversations
-    //     ]);
-    // }
-
-
-    // public function show(Conversation $conversation)
-    // {
-    //     $authId = Auth::id();
-
-    //     // حماية: المستخدم خاصو يكون من conversation
-    //     abort_if(
-    //         ! $conversation->users()->where('users.id', $authId)->exists(),
-    //         403
-    //     );
-
-    //     $conversation->load([
-    //         'users:id,name',
-    //         'messages.user:id,name'
-    //     ]);
-
-    //     $otherUser = $conversation->users->firstWhere('id', '!=', $authId);
-
-    //     return Inertia::render('ChatShow', [
-    //         'conversation' => $conversation,
-    //         'messages'     => $conversation->messages,
-    //         'otherUser'    => $otherUser
-    //     ]);
-    // }
-
-    // public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'conversation_id' => 'required|exists:conversations,id',
-    //         'content' => 'required|string'
-    //     ]);
-
-    //     $message = Message::create([
-    //         'conversation_id' => $request->conversation_id,
-    //         'user_id' => Auth::id(),
-    //         'content' => $request->content,
-    //     ]);
-
-    //     Conversation::where('id', $request->conversation_id)->touch();
-
-    //     broadcast(new MessageConversation($message))->toOthers();
-
-    //     return $message->load('user:id,name');
-    // }
-
 }

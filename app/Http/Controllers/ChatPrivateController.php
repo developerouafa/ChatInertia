@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageConversation;
 use App\Events\MessageSentPrivate;
 use App\Events\NewConversation;
 use App\Models\Conversation;
@@ -20,7 +21,7 @@ class ChatPrivateController extends Controller
      */
     public function index()
     {
-        $users = User::get();
+        $users = User::where('id', '!=', Auth::id())->get();
         return Inertia::render('ChatPrivate', [
             'users' => $users
         ]);
@@ -77,40 +78,23 @@ class ChatPrivateController extends Controller
             'content' => $request->content,
         ]);
 
-            // ➕ تحديث آخر وقت للمحادثة
-        $conversation = $message->conversation;
-        $conversation->touch();
+            $conversation = $message->conversation;
+            $conversation->touch();
 
-        broadcast(new MessageSentPrivate($message))->toOthers();
+            // 👇 الرسالة داخل المحادثة
+            broadcast(new MessageConversation($message))->toOthers();
 
+            // 👇 المستخدم الآخر (اللي غادي يستقبل أول مرة)
 
-            // 🔹 بث للمستلم داخل ChatList realtime
-            $otherUser = $conversation->users()
-                ->where('id', '!=', Auth::id())
-                ->first();
+            $otherUser = $conversation->users
+                ->firstWhere('id', '!=', Auth::id());
 
             if ($otherUser) {
                 broadcast(new NewConversation($conversation, $message, $otherUser));
             }
 
         return $message->load('user:id,name');
-    }
 
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
 }
