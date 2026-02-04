@@ -34,9 +34,10 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
                     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
                     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-
-                        Route::get('/users', [UserController::class, 'index'])->middleware( ['permission:view-users', 'role:user'])
-                                                                        ->name('users.index');
+                        Route::get('/users', [UserController::class, 'index'])->name('users.index');
+                        // test roles & permissions
+                        // Route::get('/users', [UserController::class, 'index'])->middleware( ['permission:view-users', 'role:user'])
+                        //                                                 ->name('users.index');
 
 
                         Route::get('/chat', [ChatpublicController::class, 'index'])->name('chat.index');
