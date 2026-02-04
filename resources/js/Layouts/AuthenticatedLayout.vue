@@ -5,6 +5,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import headerlanguageselector from '@/Components/HeaderLanguageSelector.vue';
 import { Link } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
@@ -33,6 +34,20 @@ const showingNavigationDropdown = ref(false);
                             <div
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
+                                <NavLink  v-if="$page.props.locale.locale == 'en' "
+                                    :href="route('language', 'ar')"
+                                    :active="route().current('language', 'ar')"
+                                >
+                                    AR
+                                </NavLink>
+
+                                <NavLink v-if="$page.props.locale.locale == 'ar'"
+                                    :href="route('language', 'en')"
+                                    :active="route().current('language', 'en')"
+                                >
+                                    EN
+                                </NavLink>
+
                                 <NavLink
                                     :href="route('dashboard')"
                                     :active="route().current('dashboard')"
